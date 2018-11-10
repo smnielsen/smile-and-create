@@ -3,6 +3,8 @@ require('colors');
 const { prompt } = require('enquirer');
 const commander = require('commander');
 
+const replace = require('./libs/replace');
+
 const services = {
   'slackbot': require('./services/slackbot-cli')
 };
@@ -45,6 +47,17 @@ const getName = async () => {
   return name;
 }
 
+const dehydrateAllFiles = async (files, properties) => (
+  Promise.all(files.map(async (file) => {
+    // const data = await replace(file, properties);
+    // const output = path.absolute(__dirname, '_test.js');
+    // fs.writeFile(output, data, 'utf8', function (err) {
+    //   if (err) reject(err);
+    //   else resolve()
+    // });
+  }))
+)
+
 const run = async () => {
   const type = await getType();
   const name = await getName();
@@ -58,8 +71,14 @@ const run = async () => {
   const service = services[type];
   const result = await service.run({ name });
 
+  const properties = {
+    name,
+    ...result.properties
+  };
+
   // Now let's copy dirs
   console.log(`Result from ${type}`, result);
+  await dehydrateAllFiles(result.files, properties);
 }
 
 run()
