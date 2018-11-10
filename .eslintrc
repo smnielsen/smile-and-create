@@ -1,0 +1,10 @@
+{
+  "extends": "standard",
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "semi": 0,
+    "no-multiple-empty-lines": [2, { "max": 2 } ]
+  }
+}
