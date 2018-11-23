@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 require('colors');
+const yeoman = require('yeoman-environment');
 const { prompt } = require('enquirer');
 const commander = require('commander');
 
-const replace = require('./libs/replace');
-
-const services = {
-  'slackbot': require('./services/slackbot-cli')
+const generators = {
+  'slackbot': require('./services/generators/slackbot/index')
 };
 
 // Let some defaults be available
@@ -18,7 +17,7 @@ commander
 const getType = async () => {
   // Run the basic setup methods
   let type = commander.type;
-  if (type && !services[type]) {
+  if (type && !generators[type]) {
     console.log(`${type.white} is not a valid type of service`.yellow)
     type = null;
   }
@@ -27,7 +26,7 @@ const getType = async () => {
       type: 'select',
       name: 'type',
       message: 'Choose your service',
-      choices: Object.keys(services)
+      choices: Object.keys(generators)
     })).type;
   }
 
@@ -47,40 +46,30 @@ const getName = async () => {
   return name;
 }
 
-const dehydrateAllFiles = async (files, properties) => (
-  Promise.all(files.map(async (file) => {
-    // const data = await replace(file, properties);
-    // const output = path.absolute(__dirname, '_test.js');
-    // fs.writeFile(output, data, 'utf8', function (err) {
-    //   if (err) reject(err);
-    //   else resolve()
-    // });
-  }))
-)
-
 const run = async () => {
   const type = await getType();
   const name = await getName();
 
   if (!name || !type) {
-    console.error('#! Please define "type" and "name" to continue'.red.bold);
-    process.exit(1);
+    throw new Error('#! Please define "type" and "name" to continue'.red.bold);
   }
 
   // Now run the specific service setup
-  const service = services[type];
-  const result = await service.run({ name });
+  const generator = generators[type];
+  if (!generator) {
+    throw new Error(`#! ${generator} is not a valid generator`.red.bold);
+  }
 
-  const properties = {
-    name,
-    ...result.properties
-  };
+  // Run Yeoman
+  const yoEnv = yeoman.createEnv();
+  yoEnv.registerStub(generator, `service:${name}`);
+  yoEnv.run(`service:${name}`, { name });
 
   // Now let's copy dirs
-  console.log(`Result from ${type}`, result);
-  await dehydrateAllFiles(result.files, properties);
+  console.log(`Result from ${type}`);
 }
 
+console.log('process.argv', process.cwd());
 run()
   .then(() => {
     console.log(`# CLI executed successfully`.green.bold)

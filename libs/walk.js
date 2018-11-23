@@ -25,11 +25,12 @@ const walk = async (dir, filelist = []) => {
   for (file of files) {
     const filepath = path.join(dir, file);
     const stat = await fsStat(filepath);
+    console.log('filepath', filepath);
 
     if (stat.isDirectory()) {
       filelist = await walk(filepath, filelist);
     } else {
-      filelist.push(file);
+      filelist.push(filepath);
     }
   }
 

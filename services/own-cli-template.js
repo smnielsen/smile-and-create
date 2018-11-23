@@ -3,6 +3,7 @@ const path = require('path');
 const walk = require('../libs/walk');
 
 const APP_DIR = './slackbot';
+
 const run = async ({ name }) => {
   console.log(`${'>>'.bold} ${name.bold} let's connect to slack`);
 

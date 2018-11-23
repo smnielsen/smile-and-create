@@ -15,6 +15,7 @@ const replace = async (file, properties) => {
         reg = new RegExp('{{' + i + '}}', 'g');
         result = result.replace(reg, properties[i]);
       }
+      console.log('Result', result);
       resolve(result);
     });
   });

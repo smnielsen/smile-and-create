@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Simon Nielsen",
+      "authorEmail": "simonnielsen@live.se",
+      "authorUrl": "simonnielsen.se"
+    }
+  }
+}
