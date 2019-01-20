@@ -1,0 +1,3 @@
+{   
+  "ignore": ["server/assets.json", "client/**/**", "README"] 
+}

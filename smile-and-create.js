@@ -5,7 +5,8 @@ const { prompt } = require('enquirer');
 const commander = require('commander');
 
 const generators = {
-  'slackbot': require('./services/generators/slackbot/index')
+  'slackbot': require('./services/generators/slackbot/index'),
+  'isomorphic': require('./services/generators/isomorphic/index')
 };
 
 // Let some defaults be available
@@ -64,15 +65,12 @@ const run = async () => {
   const yoEnv = yeoman.createEnv();
   yoEnv.registerStub(generator, `service:${name}`);
   yoEnv.run(`service:${name}`, { name });
-
-  // Now let's copy dirs
-  console.log(`Result from ${type}`);
 }
 
 console.log('process.argv', process.cwd());
 run()
   .then(() => {
-    console.log(`# CLI executed successfully`.green.bold)
+    console.log(`# CLI Started Creation...`.green.bold)
   })
   .catch((err) => {
     console.error(`CLI execution failed`, err)
