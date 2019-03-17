@@ -5,6 +5,8 @@ const path = require('path');
 // const chalk = require('chalk');
 // const yosay = require('yosay');
 
+const cleanString = (str) => str.replace(/[|&;$%@"<>()+-_, ]/g, '');
+const lowerCaseAll = (str) => str.replace(/[-]/g, '_');
 module.exports = class extends Generator {
   constructor(context, props) {
     super(context, props)
@@ -35,20 +37,20 @@ module.exports = class extends Generator {
       }
     ]);
 
-    console.log(`Now let's setup your NodeJs Service`.bold);
-    console.log('-> PostgreSQL Setup:')
+    console.log('---- Service Setup ----');
+    console.log('PostgreSQL Setup:'.green)
     const serviceData = await this.prompt([
       {
         type: 'input',
         name: 'dbName',
-        default: '...',
+        default: cleanString(this.name),
         message: 'Database name'
       }
     ]);
 
     this.data = {
       name: this.name,
-      nameUpperCase: this.name.toUpperCase(),
+      nameUpperCase: lowerCaseAll(this.name.toUpperCase()),
       serviceData,
       ...answers
     };
@@ -62,6 +64,13 @@ module.exports = class extends Generator {
       this.templatePath(),
       this.destinationPath(),
       this.data);
+
+    // Copy all dotfiles
+    this.fs.copy(
+      this.templatePath('**/.*'),
+      this.destinationPath(),
+      { globOptions: { dot: true } }
+    );
   }
 
   // Install Dependencies
@@ -72,7 +81,7 @@ module.exports = class extends Generator {
     console.log(`
     ${`== Successfully setup application ===`.green.bold}
 
-    ${'# Welcome to your new NodeJs app with PostgreSQL DB.'.bold}
+    ${'# Welcome to your new NodeJs app with PostgreSQL database.'.bold}
 
     This service is run purely with docker and docker-compose
     All scripts are run through the Makefile.

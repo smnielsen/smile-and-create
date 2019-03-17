@@ -49,6 +49,13 @@ module.exports = class extends Generator {
       this.templatePath(),
       this.destinationPath(),
       this.data);
+
+    // Copy dotfiles
+    this.fs.copy(
+      this.templatePath('**/.*'),
+      this.destinationPath(),
+      { globOptions: { dot: true } }
+    );
   }
 
   // Install Dependencies
