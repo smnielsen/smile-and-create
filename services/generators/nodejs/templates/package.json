@@ -1,0 +1,57 @@
+{
+  "name": "<%= name %>",
+  "version": "0.0.1",
+  "description": "<%= description %>",
+  "scripts": {
+    "start": "node src/server.js",
+    "start:development": "nodemon -e '.js,.yaml' -w './src' ./src/server.js",
+    "start:debug": "node --inspect=0.0.0.0:9229 ./src/server.js",
+    "lint:fix": "eslint src test --fix && yarn run prettier -- --write",
+    "lint": "eslint src test && yarn run prettier -- -l",
+    "pretest": "yarn run lint",
+    "prettier": "prettier --config '.prettierrc.js' './**/*.{js,json,yaml}'",
+    "test": "yarn run mocha:unit && yarn run mocha:integration",
+    "test:watch": "npm run mocha:integration -- --watch --bail",
+    "mocha:unit": "mocha --report spec --colors --sort 'src/**/__tests__/**/*.spec.js'",
+    "mocha:integration": "mocha --report spec --colors --sort --timeout 10000 'test/integration/**/*.js'",
+    "knex": "knex --knexfile ./src/knexfile.js"
+  },
+  "keywords": [
+    "nodejs",
+    "holidays"
+  ],
+  "author": "<%= author %>",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^5.15.2",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-chai-expect": "^2.0.1",
+    "eslint-plugin-chai-friendly": "^0.4.1",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-mocha": "^5.3.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-security": "^1.4.0",
+    "lodash": "^4.17.11",
+    "mocha": "^6.0.2",
+    "prettier": "^1.16.4",
+    "supertest": "^4.0.2",
+    "swagger-cli": "^2.2.1"
+  },
+  "dependencies": {
+    "debug": "^4.1.1",
+    "knex": "^0.16.3",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "moment": "^2.24.0",
+    "moment-business-days": "^1.1.3",
+    "node-fetch": "^2.3.0",
+    "nodemon": "^1.18.10",
+    "pg": "^7.9.0",
+    "shortid": "^2.2.14",
+    "stoppable": "^1.1.0",
+    "uuid": "^3.3.2"
+  }
+}

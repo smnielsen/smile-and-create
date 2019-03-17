@@ -5,6 +5,7 @@ const { prompt } = require('enquirer');
 const commander = require('commander');
 
 const generators = {
+  'node.js': require('./services/generators/nodejs/index'),
   'slackbot': require('./services/generators/slackbot/index'),
   'isomorphic': require('./services/generators/isomorphic/index')
 };

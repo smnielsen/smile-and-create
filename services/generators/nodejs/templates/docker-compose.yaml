@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  <%= name %>-service:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    # enable these volumes for faster local development
+    volumes:
+      - ./src:/app/src
+      - ./build/wait-for.sh:/app/build/wait-for.sh
+    #  - ./node_modules:/app/node_modules
+    # == END local dev setup
+    # enable this command for faster local development
+    command:
+      - ./build/wait-for.sh
+      - postgres.<%= name %>.compose.local:5432
+      - --
+      - npm
+      - run
+      - start:development
+    # == END  local dev setup
+    environment:
+      DEBUG: <%= name %>*
+      DB_URL: postgres://<%= name %>:password@postgres.<%= name %>.compose.local:5432/<%= serviceData.dbName %>
+    ports:
+      - 6080:8080
+    depends_on:
+      - postgres
+    container_name: <%= name %>.<%= name %>.compose.local
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: <%= serviceData.dbName %>
+      POSTGRES_USER: holidays
+      POSTGRES_PASSWORD: password
+    ports:
+      - 15432:5432
+    container_name: postgres.<%= name %>.compose.local
+
+  node-tests:
+    image: node:10
+    environment:
+      NODE_ENV: test
+      DB_URL: postgres://<%= name %>:password@postgres.<%= name %>.compose.local:5432/<%= serviceData.dbName %>
+      <%= nameUpperCase %>_APP_URI: http://<%= name %>.<%= name %>.compose.local:8080
+    volumes:
+      - .:/src
+    working_dir: /src
+    user: root
+    command: 'true'
