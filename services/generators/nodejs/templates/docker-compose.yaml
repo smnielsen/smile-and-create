@@ -15,20 +15,22 @@ services:
     # enable this command for faster local development
     command:
       - ./build/wait-for.sh
-      - postgres.<%= name %>.compose.local:5432
+      - postgres.<%= name %>:5432
       - --
       - npm
       - run
       - start:development
     # == END  local dev setup
     environment:
-      DEBUG: <%= name %>*
-      DB_URL: postgres://<%= name %>:password@postgres.<%= name %>.compose.local:5432/<%= serviceData.dbName %>
+      DEBUG: '::*'
+      DEBUG_HIDE_DATE: 'true'
+      DEBUG_COLORS: 'true'
+      DB_URL: postgres://<%= name %>:password@postgres.<%= name %>:5432/<%= serviceData.dbName %>
     ports:
       - 6080:8080
     depends_on:
       - postgres
-    container_name: <%= name %>.<%= name %>.compose.local
+    container_name: <%= name %>.<%= name %>
 
   postgres:
     image: postgres
@@ -39,14 +41,14 @@ services:
       POSTGRES_PASSWORD: password
     ports:
       - 15432:5432
-    container_name: postgres.<%= name %>.compose.local
+    container_name: postgres.<%= name %>
 
   node-tests:
     image: node:10
     environment:
       NODE_ENV: test
-      DB_URL: postgres://<%= name %>:password@postgres.<%= name %>.compose.local:5432/<%= serviceData.dbName %>
-      <%= nameUpperCase %>_APP_URI: http://<%= name %>.<%= name %>.compose.local:8080
+      DB_URL: postgres://<%= name %>:password@postgres.<%= name %>:5432/<%= serviceData.dbName %>
+      <%= nameUpperCase %>_APP_URI: http://<%= name %>.<%= name %>:8080
     volumes:
       - .:/src
     working_dir: /src

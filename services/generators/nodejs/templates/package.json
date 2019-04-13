@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node src/server.js",
     "start:development": "nodemon -e '.js,.yaml' -w './src' ./src/server.js",
-    "start:debug": "node --inspect=0.0.0.0:9229 ./src/server.js",
+    "start:debug": "nodemon -e '.js,.yaml' -w './src' --inspect ./src/server.js",
     "lint:fix": "eslint src test --fix && yarn run prettier -- --write",
     "lint": "eslint src test && yarn run prettier -- -l",
     "pretest": "yarn run lint",

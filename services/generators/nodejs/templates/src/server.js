@@ -2,7 +2,7 @@ const path = require('path');
 const Koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
-const debug = require('debug')('<%= name %>::server');
+const debug = require('debug')('::server');
 
 const config = require('./config');
 const errorMiddleware = require('./middleware/error');

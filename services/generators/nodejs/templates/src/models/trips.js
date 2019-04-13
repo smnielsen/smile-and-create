@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const debug = require('debug')('<%= name %>::model/trips');
+const debug = require('debug')('::model/trips');
 
 const { omitEmpty } = require('../util/helpers');
 const { knex, POSTGRES_ERRORS } = require('../util/knexHelpers');

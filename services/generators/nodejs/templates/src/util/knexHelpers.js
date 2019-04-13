@@ -1,5 +1,5 @@
 const Knex = require('knex');
-const debug = require('debug')('<%= name %>::util/knexHelpers');
+const debug = require('debug')('::util/knexHelpers');
 const knexConfig = require('../knexfile');
 
 exports.POSTGRES_ERRORS = {

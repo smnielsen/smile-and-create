@@ -1,4 +1,4 @@
-export SERVICE_NAME=<%= name %>
+export SERVICE_NAME=holidays-app
 
 all:
 	@echo "Available targets:"
@@ -24,10 +24,16 @@ dev: install-node-modules
 
 .PHONY: test
 test:
-	docker-compose run --rm node-tests npm test
+	@docker-compose run --rm node-tests npm test
 
 attach:
-	docker-compose run --rm node-tests bash
+	@docker-compose run --rm node-tests bash
 
 clean:
 	@docker-compose down --remove-orphans --volumes
+
+##
+## DEVELOPMENT HELPERS
+##
+seed:
+	@docker-compose run --rm node-tests yarn run knex seed:run

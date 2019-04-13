@@ -1,4 +1,4 @@
-const debug = require('debug')('<%= name %>::route/trips');
+const debug = require('debug')('::route/trips');
 const tripsModel = require('../models/trips');
 
 module.exports = app =>
