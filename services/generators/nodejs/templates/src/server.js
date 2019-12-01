@@ -1,6 +1,8 @@
 const path = require('path');
 const Koa = require('koa');
 const Router = require('koa-router');
+const logger = require('koa-pino-logger');
+
 const bodyParser = require('koa-bodyparser');
 const debug = require('debug')('::server');
 
@@ -20,6 +22,7 @@ initModelRoutes(app);
 
 // create koa app with default middleware
 const koa = new Koa();
+koa.use(logger());
 koa.use(errorMiddleware);
 koa.use(
   bodyParser({

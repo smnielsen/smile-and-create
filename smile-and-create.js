@@ -4,10 +4,12 @@ const yeoman = require('yeoman-environment');
 const { prompt } = require('enquirer');
 const commander = require('commander');
 
+const log = require('./libs/logger');
+
 const generators = {
   'node.js': require('./services/generators/nodejs/index'),
-  'slackbot': require('./services/generators/slackbot/index'),
-  'isomorphic': require('./services/generators/isomorphic/index')
+  slackbot: require('./services/generators/slackbot/index'),
+  isomorphic: require('./services/generators/isomorphic/index'),
 };
 
 // Let some defaults be available
@@ -20,33 +22,37 @@ const getType = async () => {
   // Run the basic setup methods
   let type = commander.type;
   if (type && !generators[type]) {
-    console.log(`${type.white} is not a valid type of service`.yellow)
+    log(`${type.white} is not a valid type of service`.yellow);
     type = null;
   }
   if (!type) {
-    type = (await prompt({
-      type: 'select',
-      name: 'type',
-      message: 'Choose your service',
-      choices: Object.keys(generators)
-    })).type;
+    type = (
+      await prompt({
+        type: 'select',
+        name: 'type',
+        message: 'Choose your service',
+        choices: Object.keys(generators),
+      })
+    ).type;
   }
 
   return type;
-}
+};
 
 const getName = async () => {
   let name = commander.name;
   if (!name || typeof name !== 'string') {
-    name = (await prompt({
-      type: 'input',
-      name: 'name',
-      message: 'Choose your service name'
-    })).name;
-  };
+    name = (
+      await prompt({
+        type: 'input',
+        name: 'name',
+        message: 'Choose your service name',
+      })
+    ).name;
+  }
 
   return name;
-}
+};
 
 const run = async () => {
   const type = await getType();
@@ -66,14 +72,13 @@ const run = async () => {
   const yoEnv = yeoman.createEnv();
   yoEnv.registerStub(generator, `service:${name}`);
   yoEnv.run(`service:${name}`, { name });
-}
+};
 
-console.log('process.argv', process.cwd());
+log('process.argv', process.cwd());
 run()
   .then(() => {
-    console.log(`# CLI Started Creation...`.green.bold)
+    log.success(`CLI Started Creation...`.green.bold);
   })
-  .catch((err) => {
-    console.error(`CLI execution failed`, err)
-  })
-
+  .catch(err => {
+    log.error(`CLI execution failed`, err);
+  });

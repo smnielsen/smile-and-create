@@ -15,7 +15,7 @@ module.exports = {
     'mocha/no-nested-tests': 'error',
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'import/no-cycle': 'error',
-    'no-console': ['error', { allow: ['warn', 'error'] }],
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
 
     // warning
     'no-warning-comments': 'warn',

@@ -3,6 +3,11 @@ is a cli tool to help create small and smart applications wihout all the extra f
 
 More apps will be continuously added.
 
+## Installation
+
+1. Run `yarn install`
+2. Run `sac`
+
 ## Thank you
 In this CLI I take usage of great tools such as:
 

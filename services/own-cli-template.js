@@ -1,28 +1,29 @@
 const { prompt } = require('enquirer');
 const path = require('path');
 const walk = require('../libs/walk');
+const log = require('../libs/logger');
 
 const APP_DIR = './slackbot';
 
 const run = async ({ name }) => {
-  console.log(`${'>>'.bold} ${name.bold} let's connect to slack`);
+  log.info(`${'>>'.bold} ${name.bold} let's connect to slack`);
 
   const { token: incomingWebhook = '' } = await prompt({
     type: 'input',
     name: 'token',
-    message: 'Incoming Webhook token: (can be added to .env later)'
+    message: 'Incoming Webhook token: (can be added to .env later)',
   });
 
   const { token: outgoingWebhook = '' } = await prompt({
     type: 'input',
     name: 'token',
-    message: 'Outgoing Webhook token: (can be added to .env later)'
+    message: 'Outgoing Webhook token: (can be added to .env later)',
   });
 
   const { token: botToken = '' } = await prompt({
     type: 'input',
     name: 'token',
-    message: 'Slackbot token: (can be added to .env later)'
+    message: 'Slackbot token: (can be added to .env later)',
   });
 
   // Read all files and start process them
@@ -34,10 +35,10 @@ const run = async ({ name }) => {
     properties: {
       incomingWebhook,
       outgoingWebhook,
-      botToken
+      botToken,
     },
-    files: filesList
+    files: filesList,
   };
-}
+};
 
 exports.run = run;
