@@ -1,5 +1,5 @@
 {
-  "name": "smile-and-create",
+  "name": "@smn/smile-and-create",
   "version": "1.0.0",
   "description": "CLI tool to create different applications",
   "main": "smile-and-create.js",

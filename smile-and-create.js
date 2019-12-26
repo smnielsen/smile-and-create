@@ -77,7 +77,7 @@ const run = async () => {
 log('process.argv', process.cwd());
 run()
   .then(() => {
-    log.success(`CLI Started Creation...`.green.bold);
+    log.ok(`CLI Started Creation...`.green.bold);
   })
   .catch(err => {
     log.error(`CLI execution failed`, err);
