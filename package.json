@@ -10,27 +10,38 @@
     "sac": "./smile-and-create.js"
   },
   "scripts": {
-    "lint": "eslint . --fix"
+    "eslint": "eslint services/*.js",
+    "prettier": "prettier --check \"services/*.+(js|jsx|ts|tsx|vue|json|md)\"",
+    "lint": "yarn run eslint && yarn run prettier",
+    "lint:fix": "yarn run eslint --fix && yarn run prettier --write",
+    "compliance": "cover-my-ass",
+    "test": "yarn run compliance && yarn lint"
   },
   "dependencies": {
     "colors": "^1.4.0",
-    "commander": "^4.0.1",
-    "enquirer": "^2.3.2",
-    "yeoman-environment": "^2.6.0",
-    "yeoman-generator": "^4.2.0"
+    "commander": "^6.1.0",
+    "enquirer": "^2.3.6",
+    "yeoman-environment": "^2.10.3",
+    "yeoman-generator": "^4.12.0"
   },
   "devDependencies": {
-    "eslint": "^6.7.2",
-    "eslint-config-prettier": "^6.7.0",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-chai-expect": "^2.0.1",
-    "eslint-plugin-chai-friendly": "^0.5.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-mocha": "^6.2.2",
-    "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-security": "^1.4.0",
-    "eslint-plugin-standard": "^4.0.1",
-    "prettier": "^1.19.1"
+    "@smnielsen/cover-my-ass": "^0.0.4",
+    "@smnielsen/eslint-config": "^0.4.1",
+    "@smnielsen/prettier-config": "^0.1.0",
+    "eslint": "^7.8.1",
+    "prettier": "^2.1.1"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,vue}": [
+      "yarn run lint:fix"
+    ],
+    "**/*.{md,scss,css,json}": [
+      "yarn run prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

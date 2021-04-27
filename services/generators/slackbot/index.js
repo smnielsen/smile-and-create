@@ -15,9 +15,10 @@ module.exports = class extends Generator {
   dest() {
     return `${this.destinationRoot(this.name)}`
   }
+
   // Ask for user input
   async prompting() {
-    let answers = {};
+    const answers = {};
 
     answers.incomingWebhook = await this.prompt({
       type: 'input',

@@ -1,29 +1,28 @@
 #!/usr/bin/env node
-require('colors');
-const yeoman = require('yeoman-environment');
-const { prompt } = require('enquirer');
-const commander = require('commander');
+require('colors')
+const yeoman = require('yeoman-environment')
+const { prompt } = require('enquirer')
+const commander = require('commander')
 
-const log = require('./libs/logger');
+const log = require('./libs/logger')
 
 const generators = {
-  'node.js': require('./services/generators/nodejs/index'),
+  node: require('./services/generators/nodejs/index'),
   slackbot: require('./services/generators/slackbot/index'),
-  isomorphic: require('./services/generators/isomorphic/index'),
-};
+}
 
 // Let some defaults be available
 commander
-  .option('-n, --name [name]', 'Name of the application')
+  .option('-n, --serviceName [serviceName]', 'Name of the application')
   .option('-t, --type [type]', 'Type of application')
-  .parse(process.argv);
+  .parse(process.argv)
 
 const getType = async () => {
   // Run the basic setup methods
-  let type = commander.type;
+  let type = commander.type
   if (type && !generators[type]) {
-    log(`${type.white} is not a valid type of service`.yellow);
-    type = null;
+    log(`${type.white} is not a valid type of service`.yellow)
+    type = null
   }
   if (!type) {
     type = (
@@ -33,14 +32,14 @@ const getType = async () => {
         message: 'Choose your service',
         choices: Object.keys(generators),
       })
-    ).type;
+    ).type
   }
 
-  return type;
-};
+  return type
+}
 
 const getName = async () => {
-  let name = commander.name;
+  let name = commander.serviceName
   if (!name || typeof name !== 'string') {
     name = (
       await prompt({
@@ -48,37 +47,37 @@ const getName = async () => {
         name: 'name',
         message: 'Choose your service name',
       })
-    ).name;
+    ).name
   }
 
-  return name;
-};
+  return name
+}
 
 const run = async () => {
-  const type = await getType();
-  const name = await getName();
+  const type = await getType()
+  const name = await getName()
 
   if (!name || !type) {
-    throw new Error('#! Please define "type" and "name" to continue'.red.bold);
+    throw new Error('#! Please define "type" and "name" to continue'.red.bold)
   }
 
   // Now run the specific service setup
-  const generator = generators[type];
+  const generator = generators[type]
   if (!generator) {
-    throw new Error(`#! ${generator} is not a valid generator`.red.bold);
+    throw new Error(`#! ${generator} is not a valid generator`.red.bold)
   }
 
   // Run Yeoman
-  const yoEnv = yeoman.createEnv();
-  yoEnv.registerStub(generator, `service:${name}`);
-  yoEnv.run(`service:${name}`, { name });
-};
+  const yoEnv = yeoman.createEnv()
+  yoEnv.registerStub(generator, `service:${name}`)
+  yoEnv.run(`service:${name}`, { name })
+}
 
-log('process.argv', process.cwd());
+log('process.argv', process.cwd())
 run()
   .then(() => {
-    log.ok(`CLI Started Creation...`.green.bold);
+    log.success(`CLI Started Creation...`.green.bold)
   })
-  .catch(err => {
-    log.error(`CLI execution failed`, err);
-  });
+  .catch((err) => {
+    log.error(`CLI execution failed`, err)
+  })
